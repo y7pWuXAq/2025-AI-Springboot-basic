@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
  *  - Test.java 파일 내에 root() 메소드 부분은 주석처리 
 */
 
-// Rest API 전용 라이브러리 사용\
+// Rest API 전용 라이브러리 사용
 //  -> 사용자의 요청과 응답을 담당하는 라이브러리
+// @RestController : 최초 진입점을 의미하는 Controller 클래스를 호출하겠다는 의미
+//                 : Rest는 Rest API를 의미하며 프론트엔드가 별도로 분리되었다는 의미
 @RestController
-public class Day0101_Index {
+public class Day0101_IndexController {
     /**
      * 요청 URL 패턴 http://localhost:8080/index
      * @return
@@ -55,9 +57,13 @@ public class Day0101_Index {
         sb.append("<hr/>");
         sb.append("<table border=1 width=500>");
         sb.append("<tr><th>페이지 정보</th><th>바로가기 링크</th><tr>");
-        sb.append("<tr><td>숫자 파라미터</th><th><a href='/path_variable/3'>바로가기</td><tr>");
-        sb.append("<tr><td>파라미터 1개</th><th><a href='/param?mem_id=a001'>바로가기</td><tr>");
-        sb.append("<tr><td>파리미터 2개</th><th><a href='/param2?mem_id=a001&mem_name=해주'>바로가기</td><tr>");
+        sb.append("<tr><td>숫자 파라미터</th><th><a href='/path_variable/3'>바로가기</a></td><tr>");
+        sb.append("<tr><td>파라미터 1개</th><th><a href='/param?mem_id=a001'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 전체조회</th><th><a href='/member/list'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 상세조회</th><th><a href='/member/view'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 정보입력</th><th><a href='/member/insert'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 정보수정</th><th><a href='/member/update'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 정보삭제</th><th><a href='/member/delete'>바로가기</a></td><tr>");
 
         // 버퍼 메모리에 저장된 문자열 데이터를 문자열 타입(toString())으로 변환하여 전달
         return sb.toString();
@@ -110,14 +116,42 @@ public class Day0101_Index {
     public String pageChange() {
         return "<a href='/'>HOME 바로가기</a>";
     }
-}
 
-/**
- * 스프링부터 프로젝트 신규 생성
- *  - 스프링버전 3.4
- *  - Maven 프로젝트 선택
- *  - 도메인명 : com.pknu
- *  - 작업 디렉토리, 프로젝트 명 : example
- *  - controller에 java 파일 생성
- *    -> 임의 경로(패스) 설정하여 프로젝트 잘 구동 되는지 확인 
-*/
+    /**
+     * <회원관리 URL 패턴 만들기>
+     *  - 회원관리 URL : /member
+     *    - 회원 전체조회 : /list   -> getMemberList()
+     *    - 회원 상세조회 : /view   -> getMemberView()
+     *    - 회원 정보입력 : /insert -> getMemberInsert()
+     *    - 회원 정보수정 : /update -> getMemberUpdate()
+     *    - 회원 정보삭제 : /delete -> getMemberDelete()
+     * 
+     * - 모두 GetMapping() 어노테이션 사용
+     * - 위의 처리 후 결과값(return)은 자유롭게 출력
+    */
+
+    // @GetMapping(path="/member/list")
+    // public String getMemberList() {
+    //     return "회원 전체조회 창 입니다.";
+    // }
+
+    // @GetMapping(path="/member/view")
+    // public String getMemberView() {
+    //     return "회원 상세조회 창 입니다.";
+    // }
+
+    // @GetMapping(path="/member/insert")
+    // public String getMemberInsert() {
+    //     return "회원 정보입력 창 입니다.";
+    // }
+
+    // @GetMapping(path="/member/update")
+    // public String getMemberUpdate() {
+    //     return "회원 정보수정 창 입니다.";
+    // }
+
+    // @GetMapping(path="/member/delete")
+    // public String getMemberDelete() {
+    //     return "회원 정보삭제 창 입니다.";
+    // }
+}

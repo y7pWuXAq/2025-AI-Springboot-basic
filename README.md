@@ -43,3 +43,24 @@
 
 - 터미널에서 서버 시작하기
     - project-root 폴더 위치에서 아래 명령 실행 : mvnw spring-boot:run
+<br><br><br>
+
+
+### DAY 01
+* 스프링부터 프로젝트 신규 생성
+    - 스프링버전 3.4
+    - Maven 프로젝트 선택
+    - 도메인명 : com.pknu
+    - 작업 디렉토리, 프로젝트 명 : example
+    - controller에 java 파일 생성
+        - 임의 경로(패스) 설정하여 프로젝트 잘 구동 되는지 확인 
+<br><br><br>
+
+
+### DAY 02
+- Day0201_***.java 클래스 생성
+    - DB 데이터를 추출하여 페이지에 표시
+<br><br><br>
+
+
+### DAY 03
