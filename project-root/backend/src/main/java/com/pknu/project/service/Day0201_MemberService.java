@@ -36,6 +36,7 @@ public class Day0201_MemberService {
         this.day0201_MemberRepository = day0201_MemberRepository;
     }
 
+
     /**
      * 회원 전체 정보 조회하기 비즈니스 로직
      * @return List<Day0201_Member>
@@ -43,6 +44,7 @@ public class Day0201_MemberService {
     public List<Day0201_Member> getMemberList() {
         return this.day0201_MemberRepository.findAll();
     }
+
 
     /**
      * 회원 상세조회
@@ -65,6 +67,87 @@ public class Day0201_MemberService {
         } else {
             // 조회 결과가 없을 때
             return null;
+        }
+    }
+
+
+    /**
+     * 회원 정보 입력
+     * @param member
+     * @return
+    */
+    public String setMemberInsert(Day0201_Member member){
+        // 회원아이디 중복체크 필요 (중복된 회원아이디가 있으면 저장시키면 안됨)
+        // - 회원 정보가 없으면 -> "정상적으로 입력 되었습니다."리턴
+        // - 회원 정보가 있으면 -> "회원아이디 [n001]은 이미 존재하는 아이디입니다."리턴
+        // 회원아이디 존재여부 확인
+        if (this.day0201_MemberRepository.existsById(member.getMem_id())) {
+            return "회원아이디 [n001]은 이미 존재하는 아이디 입니다.";
+        }
+
+        // 회원 정보 입력 처리하기
+        this.day0201_MemberRepository.save(member);
+
+        return "회원아이디 [n001]이 정상적으로 입력 되었습니다.";
+    }
+    
+
+    /**
+     * 회원 정보 수정하기
+     * @param mem_id (PK)
+     * @param mem_name (수정 할 데이터)
+     * @return String msg
+    */
+    public String setMemberUpdate(String mem_id, String mem_name) {
+        // 파라미터 mem_id에 대한 상세정보 조회(1건 조회)
+        // - 변수명 : optionalMember
+        Optional<Day0201_Member> optionalMember = this.day0201_MemberRepository.findById(mem_id);
+        if (optionalMember.isPresent()) {
+            // 조회 결과가 있으면 수정 진행
+            // - Optional 클래스에서 Member 클래스 추출 (변수명 : member)
+            // - 수정할 mem_id에 대한 회원 정보 1건이 담겨 있음
+            Day0201_Member member = optionalMember.get();
+
+            // 해당 회원의 정보에서 이름만 수정
+            member.setMem_name(mem_name);
+
+            // MemberRepository에 저장
+            this.day0201_MemberRepository.save(member);
+
+            // 터미널에 log 메세지 남기기
+            log.info("회원 아이디[{}]의 이름[{}]이 정상적으로 수정하였습니다.", mem_id, mem_name);
+
+            return "회원(%s)의 이름(%s)이 정상적으로 수정완료 되었습니다.".formatted(mem_id, mem_name);
+        } else {
+            return "조회한 회원 아이디(%s)는 없는 아이디입니다.".formatted(mem_id);
+        }
+    }
+
+
+    /**
+     * 회원 정보 삭제하기
+     * --------------------------
+     * @param mem_id (PK)
+     * @return String msg
+    */
+    public String setMemberDelete(String mem_id){
+        // 해당 회원 아이디에 대한 데이터가 DB에 존재하는지 여부를 확인하는 메소드
+        //  - Repository 클래스의 existsById(회원아이디) 메소드 사용
+        //     - existsById 메소드의 리턴값 true or false 
+        //  - 존재하면(true) "회원 아이디[x001] 정보 삭제 완료" 리턴
+        //  - 존재하지 않으면(false) "회원 아이디[x001]이 존재하지 않습니다." 리턴
+        //  - Controller 클래스에서 해당 메소드 결과값 출력까지 테스트
+        //     - 메소드명은 setMemberDelete() 사용
+        if (this.day0201_MemberRepository.existsById(mem_id)) {
+            // 삭제 처리하기
+            //  - 사용하는 메소드 : deleteById(pk값)
+            this.day0201_MemberRepository.deleteById(mem_id);
+
+            log.info("회원 아이디[{}] 정보 삭제 완료", mem_id);
+            return "회원 아이디[%s] 정보 삭제 완료".formatted(mem_id);
+
+        } else {
+            return "회원 아이디[%s]는 존재하지 않습니다.".formatted(mem_id);
         }
     }
 }

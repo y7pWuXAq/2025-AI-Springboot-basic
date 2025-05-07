@@ -1,10 +1,13 @@
 package com.pknu.project.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -68,4 +71,8 @@ public class Day0201_Member {
     private LocalDate mem_memorialday;
     private int mem_mileage;
     private String mem_delete;
+
+    /* Cart(자식) 테이블과 연결(매핑) */
+    @OneToMany(mappedBy="member")
+    private List<Day0302_Cart> carts = new ArrayList<>();
 }

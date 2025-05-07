@@ -43,6 +43,15 @@
 
 - 터미널에서 서버 시작하기
     - project-root 폴더 위치에서 아래 명령 실행 : mvnw spring-boot:run
+
+- 백엔드 테스트를 위한 프론트 tool 설치
+    - Postman tool 사용
+    - 사용자의 요청 데이터 처리를 대행하는 테스트 tool
+    - VS-Code 확장팩 설치 필요
+        - Postman 및 Postman Runner 확장팩 설치
+        - 설치 후 VS-Code 재실행
+    - post 및 get 전송 방식 모두 전송 가능
+
 <br><br><br>
 
 
@@ -64,3 +73,8 @@
 
 
 ### DAY 03
+- Day0301_Prod.java, Day0302_Prod.java 클래스 생성
+    - 각 클래스의 Repository, Controller 생성
+
+### DAY 04
+- 

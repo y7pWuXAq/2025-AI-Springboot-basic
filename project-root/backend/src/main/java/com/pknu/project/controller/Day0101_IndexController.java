@@ -53,17 +53,27 @@ public class Day0101_IndexController {
         // 버퍼 메모리에 문자열을 행단위로 작성하여 문자열 변수처럼 사용하는 객체
         StringBuffer sb = new StringBuffer();
 
-        sb.append("<h3>스프링부트 메인 페이지 입니다.</h3>");
+        sb.append("<h2>스프링부트 메인 페이지 입니다.</h2>");
         sb.append("<hr/>");
         sb.append("<table border=1 width=500>");
         sb.append("<tr><th>페이지 정보</th><th>바로가기 링크</th><tr>");
         sb.append("<tr><td>숫자 파라미터</th><th><a href='/path_variable/3'>바로가기</a></td><tr>");
         sb.append("<tr><td>파라미터 1개</th><th><a href='/param?mem_id=a001'>바로가기</a></td><tr>");
+        
+        sb.append("<tr><td>📜 회원 관리</th><th><a href='#'></a></td><tr>");
         sb.append("<tr><td>회원 전체조회</th><th><a href='/member/list'>바로가기</a></td><tr>");
-        sb.append("<tr><td>회원 상세조회</th><th><a href='/member/view'>바로가기</a></td><tr>");
-        sb.append("<tr><td>회원 정보입력</th><th><a href='/member/insert'>바로가기</a></td><tr>");
-        sb.append("<tr><td>회원 정보수정</th><th><a href='/member/update'>바로가기</a></td><tr>");
-        sb.append("<tr><td>회원 정보삭제</th><th><a href='/member/delete'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 상세조회</th><th><a href='/member/view?mem_id=a001'>바로가기</a></td><tr>");
+        sb.append("<tr><td>회원 정보삭제</th><th><a href='/member/delete?mem_id=a002'>바로가기</a></td><tr>");
+        
+        sb.append("<tr><td>📜 상품 관리</th><th><a href='#'></a></td><tr>");
+        sb.append("<tr><td>상품 전체조회</th><th><a href='/prod/list'>바로가기</a></td><tr>");
+        sb.append("<tr><td>상품 상세조회</th><th><a href='/prod/view?prod_id=P101000001'>바로가기</a></td><tr>");
+        sb.append("<tr><td>상품 정보삭제</th><th><a href='/prod/delete?prod_id=Z101000001'>바로가기</a></td><tr>");
+
+        sb.append("<tr><td>📜 주문 관리</th><th><a href='#'></a></td><tr>");
+        sb.append("<tr><td>주문 전체조회</th><th><a href='/cart/list'>바로가기</a></td><tr>");
+        sb.append("<tr><td>주문 상세조회</th><th><a href='/cart/view?cart_no=2005040100001&cart_prod=P101000001'>바로가기</a></td><tr>");
+        sb.append("<tr><td>주문 내역삭제</th><th><a href='/cart/delete?cart_no=2005040100001&cart_prod=P101000001'>바로가기</a></td><tr>");
 
         // 버퍼 메모리에 저장된 문자열 데이터를 문자열 타입(toString())으로 변환하여 전달
         return sb.toString();
@@ -97,7 +107,7 @@ public class Day0101_IndexController {
 
     /**
      * - 사용자 폼 데이터를 get 방식으로 전송 받을 때 사용하는 방식
-     * - http://localhost:8080/param2?mem_id=a001&mem_name=해주
+     * - http://localhost:8080/param2?mem_id=a001&mem_name=김은대
      * @param mem_id
      * @return
     */
