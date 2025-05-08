@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
  *  - RESTful API => REpresentational State Transfer Application Programming Interface의 줄임
  *    -> REST(REpresentational State Transfer) : 자원 상태 전달 아키텍처라는 의미
  *    -> ful : 형용사적 의미(~의 원칙을 따른다는 의미적 단어로만 사용됨)
- *    -> RESTful : REST의 원칙을 잘 따르는 or REST 스러운..과 같은 의미적 해석을 가진 용어 임
+ *    -> RESTful : REST의 원칙을 잘 따르는 or REST 스러운 과 같은 의미적 해석을 가진 용어 임
  *  - 주로 클라이언트와 서버간의 자원(데이터) 전달 방식에 대한 원칙(규칙)을 정의하고 있음
  *    -> JSon, XML 등의 형태로 데이터를 주고(Response 응답) 받음(Request 요청)
  *  - 클라이언트 : React, Fast API 등이 있음
