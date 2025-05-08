@@ -71,55 +71,75 @@ public class Day0201_MemberService {
     }
 
 
-    /**
-     * 회원 정보 입력
-     * @param member
-     * @return
+    /***
+     * 회원정보 수정하기 (Get 전송방식)
+     * -------------------------
+     * @param mem_id (PK)
+     * @param mem_name (수정할 데이터)
+     * @return String msg
     */
-    public String setMemberInsert(Day0201_Member member){
-        // 회원아이디 중복체크 필요 (중복된 회원아이디가 있으면 저장시키면 안됨)
-        // - 회원 정보가 없으면 -> "정상적으로 입력 되었습니다."리턴
-        // - 회원 정보가 있으면 -> "회원아이디 [n001]은 이미 존재하는 아이디입니다."리턴
-        // 회원아이디 존재여부 확인
-        if (this.day0201_MemberRepository.existsById(member.getMem_id())) {
-            return "회원아이디 [n001]은 이미 존재하는 아이디 입니다.";
+    public String setMemberUpdateGet(String mem_id, String mem_name){
+        // 파라메터 mem_id에 대한 상세정보 조회하기(1건 조회)
+        // - 변수명 : optionalMember
+        Optional<Day0201_Member> optionalMember = this.day0201_MemberRepository.findById(mem_id);
+
+        // 조회결과가 있는지 없는지 확인
+        if(optionalMember.isPresent()){
+            // 조회결과가 있으면 수정 진행
+            // - Optional 클래스에서 Member 클래스 추출하기 (변수명 : member)
+            //   -- 수정할 mem_id에 대한 회원정보 1건이 담겨져 있음
+            Day0201_Member member = optionalMember.get();
+
+            // 해당 회원의 정보에서 이름만 변경하기
+            member.setMem_name(mem_name);
+
+            // DB에 수정 반영하기
+            this.day0201_MemberRepository.save(member);
+
+            // 터미널에 출력
+            log.info("회원[{}]에 대하여 이름[{}]으로 정상 수정 되었습니다!", mem_id, mem_name);
+
+            return "회원[%s]에 대하여 정상적으로 수정 되었습니다!".formatted(mem_id);
+
+        } else {
+            return "해당 회원[%s]이 존재하지 않습니다!".formatted(mem_id);
         }
-
-        // 회원 정보 입력 처리하기
-        this.day0201_MemberRepository.save(member);
-
-        return "회원아이디 [n001]이 정상적으로 입력 되었습니다.";
     }
     
 
-    /**
-     * 회원 정보 수정하기
+    /***
+     * 회원정보 수정하기 (Post 전송방식)
+     * -------------------------
      * @param mem_id (PK)
-     * @param mem_name (수정 할 데이터)
+     * @param mem_name (수정할 데이터)
      * @return String msg
-    */
-    public String setMemberUpdate(String mem_id, String mem_name) {
-        // 파라미터 mem_id에 대한 상세정보 조회(1건 조회)
+     */
+    public String setMemberUpdate(Day0201_Member p_member){
+        // 파라메터 mem_id에 대한 상세정보 조회하기(1건 조회)
         // - 변수명 : optionalMember
-        Optional<Day0201_Member> optionalMember = this.day0201_MemberRepository.findById(mem_id);
-        if (optionalMember.isPresent()) {
-            // 조회 결과가 있으면 수정 진행
-            // - Optional 클래스에서 Member 클래스 추출 (변수명 : member)
-            // - 수정할 mem_id에 대한 회원 정보 1건이 담겨 있음
+        Optional<Day0201_Member> optionalMember = this.day0201_MemberRepository.findById(p_member.getMem_id());
+
+        // 조회결과가 있는지 없는지 확인
+        if(optionalMember.isPresent()){
+            // 조회결과가 있으면 수정 진행
+            // - Optional 클래스에서 Member 클래스 추출하기 (변수명 : member)
+            //   -- 수정할 mem_id에 대한 회원정보 1건이 담겨져 있음
             Day0201_Member member = optionalMember.get();
 
-            // 해당 회원의 정보에서 이름만 수정
-            member.setMem_name(mem_name);
+            // 해당 회원의 정보에서 이름만 변경하기
+            member.setMem_name(p_member.getMem_name());
 
-            // MemberRepository에 저장
+            // DB에 수정 반영하기
             this.day0201_MemberRepository.save(member);
 
-            // 터미널에 log 메세지 남기기
-            log.info("회원 아이디[{}]의 이름[{}]이 정상적으로 수정하였습니다.", mem_id, mem_name);
+            // 터미널에 출력
+            log.info("회원[{}]에 대하여 이름[{}]으로 정상 수정 되었습니다!", p_member.getMem_id(), 
+                                                                                      p_member.getMem_name());
 
-            return "회원(%s)의 이름(%s)이 정상적으로 수정완료 되었습니다.".formatted(mem_id, mem_name);
+            return "회원[%s]에 대하여 정상적으로 수정 되었습니다!".formatted(p_member.getMem_id());
+
         } else {
-            return "조회한 회원 아이디(%s)는 없는 아이디입니다.".formatted(mem_id);
+            return "해당 회원[%s]이 존재하지 않습니다!".formatted(p_member.getMem_id());
         }
     }
 
@@ -150,4 +170,23 @@ public class Day0201_MemberService {
             return "회원 아이디[%s]는 존재하지 않습니다.".formatted(mem_id);
         }
     }
+
+    public String setMemberInsert(Day0201_Member member){
+        // 회원아이디 중복체크 필요 (중복된 회원아이디가 있으면 저장 시키면 안됨)
+        // - 회원 정보가 없으면 -> "회원아이디 [n001]이 정상적으로 입력 되었습니다." 리턴
+        // - 회원 정보가 있으면 -> "회원아이디 [n001]은 이미 존재하는 아이디 입니다." 리턴
+        // - Controller 클래스에서 서비스 호출하여 리턴값 받아서 출력하는 프로그램까지만 작성...
+        //   (파라메터 정의하지 말기, 서버 실행은 하지 말기...)
+
+        // 회원아이디 존재여부 확인
+        if(this.day0201_MemberRepository.existsById(member.getMem_id())){
+            return "회원아이디 [n001]은 이미 존재하는 아이디 입니다.";
+        }
+        
+        // 회원 정보 입력 처리하기
+        this.day0201_MemberRepository.save(member);
+
+        return "회원아이디 [n001]이 정상적으로 입력 되었습니다.";
+    }
 }
+

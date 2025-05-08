@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import lombok.ToString;
 @Getter // getter, setter 자동 생성(Lombok 디펜던시 사용)
 @Setter
 @ToString // 모든 getter의 출력 결과는 문자열로 하고자 할 때
+@Builder
 public class Day0302_Cart {
     @Id
     @Column(name="cart_no")

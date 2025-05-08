@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.pknu.project.dto.Day0402_CartMemberDTO;
@@ -28,6 +27,10 @@ public interface Day0302_CartRepository extends JpaRepository<Day0302_Cart, Day0
      * 주문내역과 회원정보를 조회하기 위한 메소드 정의
      * - 조회 결과를 DTO에 담는 역할을 수행
     */
+    @Query("Select new com.pknu.project.dto.Day0402_CartMemberDTO(c.cart_no, c.cart_prod, c.cart_qty, m.mem_id, m.mem_name)" + 
+           "From Day0302_Cart c Inner Join c.member m")
+    List<Day0402_CartMemberDTO> findCartMemberData();
+
     @Query("SELECT NEW com.pknu.project.dto.Day0402_CartMemberDTO(c.cart_no, c.cart_prod, c.cart_qty, m.mem_id, m.mem_name)" +
              "FROM Day0302_Cart c INNER JOIN c.member m")
     List<Day0402_CartMemberDTO> findDay0402_CartMemberData();
@@ -38,5 +41,13 @@ public interface Day0302_CartRepository extends JpaRepository<Day0302_Cart, Day0
 
     @Query("SELECT NEW com.pknu.project.dto.Day0403_CartProdDTO(c.cart_no, c.cart_prod, c.cart_qty, c.cart_member, p.prod_name, p.prod_price, p.prod_sale)" +
              "FROM Day0302_Cart c INNER JOIN c.prod p WHERE c.id.cart_prod = : ProdId")
-    List<Day0403_CartProdDTO> findByProdID(@Param("ProdId") String ProdId);
+    List<Day0403_CartProdDTO> findByProdId(String prodId);
+
+    @Query("SELECT new com.pknu.project.dto.Day0404_CartMemberProdDTO(" +
+           "c.cart_no, c.cart_prod, c.cart_qty, c.cart_member, " +
+           "m.mem_name, m.mem_mail, " + 
+           "p.prod_name, p.prod_sale) " +
+           "FROM Day0302_Cart c INNER JOIN Day0301_Prod p ON c.cart_prod = p.prod_id " + 
+           "INNER JOIN Day0201_Member m ON c.cart_member = m.mem_id")
+    List<Day0403_CartProdDTO> findCartMemberProdJoinAll();
 }

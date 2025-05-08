@@ -84,29 +84,74 @@ public class Day0301_ProdService {
     }
 
     
-    /**
-     * 상품 정보 수정
+    /***
+     * 상품정보 수정하기 (Get 전송방식)
+     * -------------------------
      * @param prod_id (PK)
-     * @param prod_name (수정 할 데이터)
+     * @param prod_name (수정할 데이터)
      * @return String msg
     */
-    public String setProdUpdate(String prod_id, String prod_name) {
+    public String setProdUpdateGet(String prod_id, String prod_name){
+        // 파라메터 prod_id에 대한 상세정보 조회하기(1건 조회)
+        // - 변수명 : optionalProd
         Optional<Day0301_Prod> optionalProd = this.day0301_ProdRepository.findById(prod_id);
-        if (optionalProd.isPresent()) {
+
+        // 조회결과가 있는지 없는지 확인
+        if(optionalProd.isPresent()){
+            // 조회결과가 있으면 수정 진행
+            // - Optional 클래스에서 Prod 클래스 추출하기 (변수명 : prod)
+            //   -- 수정할 prod_id에 대한 상품정보 1건이 담겨져 있습니다.
             Day0301_Prod prod = optionalProd.get();
 
-            // 해당 상품의 정보에서 이름만 수정
+            // 해당 상품의 정보에서 이름만 변경하기
             prod.setProd_name(prod_name);
 
-            // ProdRepository에 저장
+            // DB에 수정 반영하기
             this.day0301_ProdRepository.save(prod);
 
-            // 터미널에 로그 남기기
-            log.info("상품 아이디[{}]의 이름[{}]이 정상적으로 수정 되었습니다.", prod_id, prod_name);
+            // 터미널에 출력
+            log.info("상품[{}]에 대하여 이름[{}]으로 정상 수정 되었습니다!!!", prod_id, prod_name);
 
-            return "상품(%s)의 이름(%s)이 정상적으로 수정 되었습니다.".formatted(prod_id, prod_name);
+            return "상품[%s]에 대하여 정상적으로 수정 되었습니다!!!".formatted(prod_id);
+
         } else {
-            return "조회한 상품 아이디(%s)는 없는 아이디입니다.".formatted(prod_id);
+            return "해당 상품[%s]이 존재하지 않습니다!!".formatted(prod_id);
+        }
+    }
+
+    /***
+     * 상품정보 수정하기 (Post 전송방식)
+     * -------------------------
+     * @param prod_id (PK)
+     * @param prod_name (수정할 데이터)
+     * @return String msg
+     */
+    public String setProdUpdate(Day0301_Prod p_prod){
+        // 파라메터 prod_id에 대한 상세정보 조회하기(1건 조회)
+        // - 변수명 : optionalProd
+        Optional<Day0301_Prod> optionalProd = this.day0301_ProdRepository.findById(p_prod.getProd_id());
+
+        // 조회결과가 있는지 없는지 확인
+        if(optionalProd.isPresent()){
+            // 조회결과가 있으면 수정 진행
+            // - Optional 클래스에서 Prod 클래스 추출하기 (변수명 : prod)
+            //   -- 수정할 prod_id에 대한 상품정보 1건이 담겨져 있습니다.
+            Day0301_Prod prod = optionalProd.get();
+
+            // 해당 상품의 정보에서 이름만 변경하기
+            prod.setProd_name(p_prod.getProd_name());
+
+            // DB에 수정 반영하기
+            this.day0301_ProdRepository.save(prod);
+
+            // 터미널에 출력
+            log.info("상품[{}]에 대하여 이름[{}]으로 정상 수정 되었습니다!!!", p_prod.getProd_id(), 
+                                                                                      p_prod.getProd_name());
+
+            return "상품[%s]에 대하여 정상적으로 수정 되었습니다!!!".formatted(p_prod.getProd_id());
+
+        } else {
+            return "해당 상품[%s]이 존재하지 않습니다!!".formatted(p_prod.getProd_id());
         }
     }
 
@@ -128,5 +173,23 @@ public class Day0301_ProdService {
         } else {
             return "조회한 상품 아이디(%s)는 없는 아이디입니다.".formatted(prod_id);
         }
+    }
+
+    public String setProdInsert(Day0301_Prod prod) {
+        // 상품아이디 중복체크 필요 (중복된 상품아이디가 있으면 저장 시키면 안됨)
+        // - 상품 정보가 없으면 -> "상품아이디 [n001]이 정상적으로 입력 되었습니다." 리턴
+        // - 상품 정보가 있으면 -> "상품아이디 [n001]은 이미 존재하는 아이디 입니다." 리턴
+        // - Controller 클래스에서 서비스 호출하여 리턴값 받아서 출력하는 프로그램까지만 작성
+        //   (파라메터 정의하지 말기, 서버 실행은 하지 말기...)
+
+        // 상품아이디 존재여부 확인
+        if(this.day0301_ProdRepository.existsById(prod.getProd_id())){
+            return "상품아이디 [%s]은 이미 존재하는 아이디 입니다.".formatted(prod.getProd_id());
+        }
+        
+        // 상품 정보 입력 처리하기
+        this.day0301_ProdRepository.save(prod);
+
+        return "상품아이디 [%s]이 정상적으로 입력 되었습니다.".formatted(prod.getProd_id());
     }
 }

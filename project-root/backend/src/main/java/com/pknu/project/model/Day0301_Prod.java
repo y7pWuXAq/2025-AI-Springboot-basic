@@ -29,8 +29,9 @@ public class Day0301_Prod {
     @Column(name="prod_id")
     private String prod_id;
     private String prod_name;
-    private String prod_lug;
-    private String prod_buyer;
+
+    // private String prod_lug;
+    // private String prod_buyer;
 
     private int prod_cost;
     private int prod_price;
