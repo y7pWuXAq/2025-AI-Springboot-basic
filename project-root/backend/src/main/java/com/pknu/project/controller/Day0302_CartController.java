@@ -3,6 +3,7 @@ package com.pknu.project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,12 +92,26 @@ public class Day0302_CartController {
         return ResponseEntity.ok(this.day0302_CartService.getCartList());
     }
 
+    /* Paging 처리 메소드 */
+    // 메소드명 : getCartListPaging
+    // 요청 파라미터 : page(현재 페이지 번호), size(한 화면에 보여줄 행의 갯수)
+    // 클라이언트에서 전송하는 방식 : get 방식 -  http://localhost:8080/cart/list_paging?page=1&size=10
+    //  -> 전송받는 page 및 size는 모두 문자열로 전송되며 int로 받으면 됨
+    //  -> 웹에서 http로 전송되는 모든 파라미터는 문자열로 전송
+    @GetMapping(path="/list_paging")
+    public ResponseEntity<Page<Day0501_CartDTO>> getCartListPaging(@RequestParam(name="page", defaultValue="1") int page,
+                                                                   @RequestParam(name="size", defaultValue="10") int size) {
+        Page<Day0501_CartDTO> cartPage = this.day0302_CartService.getCartListPaging(page, size);
+        
+        return ResponseEntity.ok(cartPage);
+    }
+
 
     // 주문 상세조회 /view -> getCartView()
     // get 방식으로 파라미터 전송 : http://localhost:8080/cart/view?cart_no=2005040100001&cart_prod=P101000001
     // - GET : 상세 조회시 사용됨 (예시 URL 패턴 : /cart/view/2025050100001/P10100001 사용)
     //   -> Controller.java 클래스에서는 @GetMapping 및 @PathVariable 사용
-    // - get방식으로 파라메터 전송 : http://localhost:8080/cart/view?cart_no                                                                              cart.getCart_sale()=a001
+    // - get방식으로 파라메터 전송 : http://localhost:8080/cart/view?cart_no
     @GetMapping(path="/view/{cart_no}/{cart_prod}")
     public ResponseEntity<Day0501_CartDTO> getCartView(@PathVariable("cart_no") String cart_no, 
                                                        @PathVariable("cart_prod") String cart_prod) {

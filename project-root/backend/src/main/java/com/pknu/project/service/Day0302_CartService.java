@@ -5,6 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest; // Paging 처리 라이브러리
+import org.springframework.data.domain.Pageable; // Paging 처리 라이브러리
+import org.springframework.data.domain.Page; // Paging 처리 라이브러리
 import org.springframework.stereotype.Service;
 
 import com.pknu.project.dto.Day0402_CartMemberDTO;
@@ -118,6 +121,29 @@ public class Day0302_CartService {
         // 변환된 모든 DTO 들을 List로 다시 묶는 작업
         .collect(Collectors.toList());
     }
+
+    /* Paging 처리 메소드 */
+    public Page<Day0501_CartDTO> getCartListPaging(int page, int size) {
+        /* 페이징 처리시 사용하는 springBoot 라이브러리
+         * - PageRequest : 페이징 요청 정보 관리
+         * - Page<Entity> : 페이징 결과 정보 관리
+         * - Repository에서는 별도의 파일 처리 없이 진행
+         *   -> Page 라이브러리를 통해서 Repository에 데이터 전달됨
+         *   -> Repository에서는 Page 처리 라이브러리가 기본적으로 사용됨
+        */
+
+        // 페이징 요청 처리 : PageRequest
+        // - 반환값 : Pageble(Repository에 전달해서 데이터 조회용으로 사용)
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 페이징 처리된 Cart 목록 요청
+        Page<Day0302_Cart> cartPage = this.day0302_CartRepository.findAll(pageable);
+
+        // DTO로 반환
+        return cartPage.map(cart-> convertToDTO(cart));
+    }
+
+
 
 
     /**
